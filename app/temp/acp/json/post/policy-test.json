@@ -1,0 +1,54 @@
+[
+    {
+        "action": "ALLOW",
+        "enabled": true,
+        "type": "AccessRule",
+        "name": "BGP Rule_#1-1",
+        "sendEventsToFMC": true,
+        "logFiles": false,
+        "logBegin": false,
+        "logEnd": true,
+        "sourceNetworks": {
+            "objects": [
+                {
+                    "type": "Host",
+                    "id": "000C296D-A53D-0ed3-0000-034359750468",
+                    "name": "Router_10.202.132.82"
+                },
+                {
+                    "type": "Host",
+                    "id": "000C296D-A53D-0ed3-0000-034359750469",
+                    "name": "Router_10.202.132.83"
+                }
+            ]
+        },
+        "destinationNetworks": {
+            "objects": [
+                {
+                    "type": "Host",
+                    "id": "000C296D-A53D-0ed3-0000-034359750468",
+                    "name": "Router_10.202.132.82"
+                },
+                {
+                    "type": "Host",
+                    "id": "000C296D-A53D-0ed3-0000-034359750469",
+                    "name": "Router_10.202.132.83"
+                }
+            ]
+        },
+        "destinationPorts": {
+            "objects": [
+                {
+                    "type": "PortObjectGroup",
+                    "id": "000C296D-A53D-0ed3-0000-034359750836",
+                    "name": "icmp-requests-FTD_MIG4"
+                },
+                {
+                    "type": "ProtocolPortObject",
+                    "id": "000C296D-A53D-0ed3-0000-034359750767",
+                    "name": "BGP"
+                }
+            ]
+        }
+    }
+]
