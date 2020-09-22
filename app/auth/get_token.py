@@ -19,4 +19,4 @@ def get_token(server, user_data):
     except Exception as err:
         print ("Error in generating auth token --> "+str(err))
         return None    
-    return headers
+    return auth_token

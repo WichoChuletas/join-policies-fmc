@@ -2,38 +2,41 @@ import json
 
 from app.api import get_data, post_data
 
-acp_path = '/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/policy/accesspolicies?limit=1000&expanded=true'
-acr_path = '/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/policy/accesspolicies/{}/accessrules?limit=1000&expanded=true'
+acp_path = '/api/fmc_config/v1/domain/b9ec7a85-8030-0f91-2518-000000000000/policy/accesspolicies?limit=1000&expanded=true'
+acr_path = '/api/fmc_config/v1/domain/b9ec7a85-8030-0f91-2518-000000000000/policy/accesspolicies/{}/accessrules?limit=1000&expanded=true'
 
-acr_path_post = '/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/policy/accesspolicies/{}/accessrules?bulk=true'
+acr_path_post = '/api/fmc_config/v1/domain/b9ec7a85-8030-0f91-2518-000000000000/policy/accesspolicies/{}/accessrules?bulk=true'
 
 acp_fmc_json_directory = 'app\\temp\\acp\\json\\fmc\\' 
 acp_post_json_directory = 'app\\temp\\acp\\json\\post\\'
 
 
-def get_acp(server, headers):
+def get_acp(server, auth_token):
     
     elements = []
 
-    def get_acr(acp_id, acp_name, sufix):
-        acrs = get_data(server, acr_path.format(acp_id), headers)
-        json_save(acp_fmc_json_directory, acrs, acp_name)
+    def get_acr(acp_id, acp_name):
+        acrs = get_data(server, acr_path.format(acp_id), auth_token)
+        #json_save(acp_fmc_json_directory, acrs, acp_name)
         for acr in acrs:
-            if len(acr.name) <= 27:
-                print(acr.name)
+            
+            #acr['name'] = name_rules(acr['name'], sufix)
             del acr['links']
             del acr['metadata']
             del acr['id']
             del acr['vlanTags']
+            
             elements.append(acr)
 
         json_save(acp_post_json_directory, elements, acp_name)
+
+        
 
     continuar = True
 
     while(continuar):
 
-        acps = get_data(server, acp_path, headers)
+        acps = get_data(server, acp_path, auth_token)
 
         print('\n')
         i = 1
@@ -51,19 +54,20 @@ def get_acp(server, headers):
         else :
 
             option_acp = acps[option]
-            print(option_acp['id'])
-            sufix = input("Sufix name rule : ")
-            get_acr(option_acp['id'], option_acp['name'], sufix)
+            #print(option_acp['id'])
+
+            get_acr(option_acp['id'], option_acp['name'])
+            elements = []
 
 
-def post_acp(server, headers):
+def post_acp(server, auth_token):
     elements = []
 
     continuar = True
 
     while(continuar):
 
-        acps = get_data(server, acp_path, headers)
+        acps = get_data(server, acp_path, auth_token)
 
         print('\n')
         i = 1
@@ -79,11 +83,14 @@ def post_acp(server, headers):
 
         else :
             option_acp = acps[option]
+            print(option_acp['id'])
             print('\n')
             directory = input("JSON file : ")
+            sufix = input("Sufix name rule : ")
             data = json_open(directory)
-            print(option_acp['id'])
-            post_data(server, acr_path_post.format(option_acp['id']), headers, data)
+            data = namer_rules(data, sufix)
+            
+            post_data(server, acr_path_post.format(option_acp['id']), auth_token, data)
 
 
 def json_save(directory, json_acr, acp_name):
@@ -93,3 +100,17 @@ def json_save(directory, json_acr, acp_name):
 def json_open(directory):
     with open(directory) as json_file:
         return json.load(json_file)
+
+def name_rules(name, sufix):
+    name = name + '-' + sufix
+    if len(name) > 30:
+        name = name[:30]
+        return name
+    return name
+
+def namer_rules(rules, sufix):
+    new_rules = []
+    for rule in rules:
+        rule['name'] = name_rules(rule['name'], sufix)
+        new_rules.append(rule)
+    return new_rules
