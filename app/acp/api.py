@@ -2,10 +2,10 @@ import json
 
 from app.api import get_data, post_data
 
-acp_path = '/api/fmc_config/v1/domain/b9ec7a85-8030-0f91-2518-000000000000/policy/accesspolicies?limit=1000&expanded=true'
-acr_path = '/api/fmc_config/v1/domain/b9ec7a85-8030-0f91-2518-000000000000/policy/accesspolicies/{}/accessrules?limit=1000&expanded=true'
+acp_path = '/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/policy/accesspolicies?limit=1000&expanded=true'
+acr_path = '/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/policy/accesspolicies/{}/accessrules?limit=1000&expanded=true'
 
-acr_path_post = '/api/fmc_config/v1/domain/b9ec7a85-8030-0f91-2518-000000000000/policy/accesspolicies/{}/accessrules?bulk=true'
+acr_path_post = '/api/fmc_config/v1/domain/e276abec-e0f2-11e3-8169-6d9ed49b625f/policy/accesspolicies/{}/accessrules?bulk=true'
 
 acp_fmc_json_directory = 'app\\temp\\acp\\json\\fmc\\' 
 acp_post_json_directory = 'app\\temp\\acp\\json\\post\\'
