@@ -39,8 +39,8 @@ def get_acp(server, auth_token):
         acps = get_data(server, acp_path, auth_token)
 
         print('\n')
-        i = 1
-        for i in range(1, len(acps)):
+        i = 0
+        for i in range(0, len(acps)):
             print( str(i) + '. ' + acps[i]['name'])
         print(str(i+1) + '. ' + 'Salir')
 
